@@ -1,0 +1,22 @@
+{
+  "name": "guestbook",
+  "version": "1.0.0",
+  "description": "Guestbook that let user create accounts and login then add/edit/delete messages as well as reply to messages",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amsstudio/guestbook.git"
+  },
+  "author": "Abdelrahman mohamed saad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amsstudio/guestbook/issues"
+  },
+  "homepage": "https://github.com/amsstudio/guestbook#readme",
+  "dependencies": {
+    "mongodb": "^3.6.9"
+  }
+}
