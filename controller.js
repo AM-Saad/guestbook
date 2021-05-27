@@ -15,7 +15,7 @@ module.exports = http.createServer((req, res) => {
             console.log(`Data ${body}`)
         })
         req.on('end', function () {
-            console.log(body);
+            console.log(body.name);
             let parsedBody = JSON.parse(body.data)
             User.findByEmail(body.email)
                 .then(exist => {
