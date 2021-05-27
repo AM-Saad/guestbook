@@ -16,6 +16,12 @@ module.exports = http.createServer((req, res) => {
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
+            if(!parsedBody.name || !parsedBody.email || !parsedBody.password){
+                res.statusCode = 401;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ message: 'Name, email and password are required' }));
+                return
+            }
             User.findByEmail(parsedBody.email)
                 .then(exist => {
                     if (exist) {
