@@ -19,7 +19,9 @@ module.exports = http.createServer((req, res) => {
             User.findByEmail(parsedBody.email)
                 .then(exist => {
                     if (exist) {
-                        // return message
+                        res.statusCode = 401;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify({ message: 'This email already exists' }));
                         return
                     }
                     const newUser = new User({
@@ -28,8 +30,14 @@ module.exports = http.createServer((req, res) => {
                         password: body.password
                     });
                     newUser.save();
+                    res.statusCode = 201;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: 'Your account created successfully' }));
+                    return
                 }).catch(error => {
-                    console.log(error);
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: '500 internal server error' }));
                 })
 
         })
