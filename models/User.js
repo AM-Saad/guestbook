@@ -13,7 +13,7 @@ class User {
             password: this.password,
         });
     }
-    static findByEmail(emial) {
+    static findByEmail(email) {
         const db = getDb();
         return db.collection("users").findOne({ email: email });
       }

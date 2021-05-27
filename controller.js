@@ -15,15 +15,24 @@ module.exports = http.createServer((req, res) => {
             console.log(`Data ${body}`)
         })
         req.on('end', function () {
-            console.log(`Compelete Data  ${body}`)
-            const newUser = new User(
-                name,
-                email,
-                password,
-            );
-            newUser.save();
+            User.findByEmail(body.email)
+                .then(exist => {
+                    if (exist) {
+                        // return message
+                        return
+                    }
+                    const newUser = new User({
+                        name: body.name,
+                        email: body.email,
+                        password: body.password
+                    });
+                    newUser.save();
+                }).catch(error => {
+                    console.log(error);
+                })
+
         })
-    
+
     }
 
 
