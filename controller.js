@@ -5,14 +5,20 @@ module.exports = http.createServer((req, res) => {
 
     const reqUrl = url.parse(req.url, true);
 
-    // GET Endpoint
-    if (reqUrl.pathname == '/' && req.method === 'GET') {
+    // SignUp Endpoint
+    if (reqUrl.pathname == '/signup' && req.method === 'POST') {
+        var body = ''
+        req.on('data', function (data) {
+            body += data
+            console.log(`Data ${body}`)
+        })
+        req.on('end', function () {
+            console.log(`Compelete Data  ${body}`)
+        })
 
-            res.writeHead(200, { 'Content-Type': 'text/html' }); 
-        
-            // set response content    
-            res.write('<html><body><p>This is home Page.</p></body></html>');
-            res.end();
 
     }
+
+
+
 });
