@@ -1,6 +1,7 @@
 const http = require('http');
 const url = require('url');
 
+const User = require("./models/User").User;
 module.exports = http.createServer((req, res) => {
 
     const reqUrl = url.parse(req.url, true);
@@ -15,7 +16,7 @@ module.exports = http.createServer((req, res) => {
         req.on('end', function () {
             console.log(`Compelete Data  ${body}`)
         })
-
+        
 
     }
 
@@ -35,7 +36,7 @@ module.exports = http.createServer((req, res) => {
 
     }
 
-    
+
     // Edit Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
 
