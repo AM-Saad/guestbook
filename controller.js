@@ -16,7 +16,7 @@ module.exports = http.createServer((req, res) => {
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
-            if(!parsedBody.name || !parsedBody.email || !parsedBody.password){
+            if (!parsedBody.name || !parsedBody.email || !parsedBody.password) {
                 res.statusCode = 401;
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify({ message: 'Name, email and password are required' }));
@@ -54,6 +54,38 @@ module.exports = http.createServer((req, res) => {
 
     // Login Endpoint
     if (reqUrl.pathname == '/login' && req.method === 'POST') {
+        var body = ''
+        req.on('data', function (data) {
+            body += data
+            console.log(body);
+        })
+        req.on('end', function () {
+            const parsedBody = JSON.parse(body)
+            if (!parsedBody.email || !parsedBody.password) {
+                res.statusCode = 401;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ message: 'Email and password are required' }));
+                return
+            }
+            User.findByEmail(parsedBody.email)
+                .then(user => {
+                    if (!user) {
+                        res.statusCode = 401;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify({ message: 'This email not exists' }));
+                        return
+                    }
+                    res.statusCode = 201;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(user));
+                    return
+                }).catch(error => {
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: '500 internal server error' }));
+                })
+
+        })
 
     }
 
