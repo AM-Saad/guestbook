@@ -70,11 +70,12 @@ module.exports = http.createServer((req, res) => {
             User.findByEmail(parsedBody.email)
                 .then(user => {
                     if (!user) {
-                        res.statusCode = 401;
+                        res.statusCode = 404;
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify({ message: 'This email not exists' }));
                         return
                     }
+                    
                     res.statusCode = 201;
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(user));
