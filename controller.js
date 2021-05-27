@@ -11,12 +11,12 @@ module.exports = http.createServer((req, res) => {
     if (reqUrl.pathname == '/signup' && req.method === 'POST') {
         var body = ''
         req.on('data', function (data) {
-            console.log(data);
             body += data
+            console.log(body);
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
-            console.log(parsedBody);
+            console.log(parsedBody.name);
             User.findByEmail(body.email)
                 .then(exist => {
                     if (exist) {
