@@ -1,7 +1,6 @@
 const http = require('http');
 const mongoConnect = require("./util/db").mongoConnect;
 
-
 const server = require('./controller.js');
 
 
