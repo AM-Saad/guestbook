@@ -18,6 +18,7 @@ module.exports = http.createServer((req, res) => {
             User.findByEmail(body.email)
                 .then(exist => {
                     if (exist) {
+                        console.log(exist);
                         // return message
                         return
                     }
@@ -36,38 +37,37 @@ module.exports = http.createServer((req, res) => {
     }
 
 
-}
 
     // Login Endpoint
     if (reqUrl.pathname == '/login' && req.method === 'POST') {
 
-}
+    }
 
-// Messages Endpoint
-if (reqUrl.pathname == '/messages' && req.method === 'GET') {
+    // Messages Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'GET') {
 
-}
-
-
-// New Message Endpoint
-if (reqUrl.pathname == '/messages' && req.method === 'POST') {
-
-}
+    }
 
 
-// Edit Message Endpoint
-if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+    // New Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'POST') {
 
-}
+    }
 
-// Delete Message Endpoint
-if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
 
-}
+    // Edit Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
 
-// Reply To Message Endpoint
-if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+    }
 
-}
+    // Delete Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
+
+    }
+
+    // Reply To Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+
+    }
 
 });
