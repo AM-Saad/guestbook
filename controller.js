@@ -11,6 +11,7 @@ module.exports = http.createServer((req, res) => {
     if (reqUrl.pathname == '/signup' && req.method === 'POST') {
         var body = ''
         req.on('data', function (data) {
+            console.log(data);
             body += data
         })
         req.on('end', function () {
