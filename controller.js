@@ -19,7 +19,6 @@ module.exports = http.createServer((req, res) => {
             User.findByEmail(parsedBody.email)
                 .then(exist => {
                     if (exist) {
-                        console.log(exist);
                         // return message
                         return
                     }
