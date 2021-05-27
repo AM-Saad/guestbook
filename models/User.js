@@ -13,7 +13,10 @@ class User {
             password: this.password,
         });
     }
-  
+    static findByEmail(emial) {
+        const db = getDb();
+        return db.collection("users").findOne({ email: email });
+      }
 
 }
 exports.User = User;
