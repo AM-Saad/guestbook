@@ -75,7 +75,12 @@ module.exports = http.createServer((req, res) => {
                         res.end(JSON.stringify({ message: 'This email not exists' }));
                         return
                     }
-                    
+                    if(user.password != parsedBody.password){
+                        res.statusCode = 401;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify({ message: 'Password is wrong' }));
+                        return
+                    }
                     res.statusCode = 201;
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(user));
