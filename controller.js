@@ -19,6 +19,36 @@ module.exports = http.createServer((req, res) => {
 
     }
 
+    // Login Endpoint
+    if (reqUrl.pathname == '/login' && req.method === 'POST') {
 
+    }
+
+    // Messages Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'GET') {
+
+    }
+
+
+    // New Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'POST') {
+
+    }
+
+    
+    // Edit Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+
+    }
+
+    // Delete Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
+
+    }
+
+    // Reply To Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+
+    }
 
 });
