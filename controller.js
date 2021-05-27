@@ -12,12 +12,11 @@ module.exports = http.createServer((req, res) => {
         var body = ''
         req.on('data', function (data) {
             body += data
-            console.log(data);
             console.log(`Data ${body}`)
         })
         req.on('end', function () {
+            console.log(body);
             let parsedBody = JSON.parse(body.data)
-            console.log(parsedBody);
             User.findByEmail(body.email)
                 .then(exist => {
                     if (exist) {
