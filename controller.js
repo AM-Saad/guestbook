@@ -16,15 +16,13 @@ module.exports = http.createServer((req, res) => {
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
-            console.log(parsedBody.name);
-            User.findByEmail(body.email)
+            User.findByEmail(parsedBody.email)
                 .then(exist => {
                     if (exist) {
                         console.log(exist);
                         // return message
                         return
                     }
-                    console.log(body.name);
                     const newUser = new User({
                         name: body.name,
                         email: body.email,
