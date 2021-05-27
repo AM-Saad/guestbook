@@ -75,7 +75,7 @@ module.exports = http.createServer((req, res) => {
                         res.end(JSON.stringify({ message: 'This email not exists' }));
                         return
                     }
-                    if(user.password != parsedBody.password){
+                    if (user.password != parsedBody.password) {
                         res.statusCode = 401;
                         res.setHeader('Content-Type', 'application/json');
                         res.end(JSON.stringify({ message: 'Password is wrong' }));
@@ -95,16 +95,17 @@ module.exports = http.createServer((req, res) => {
 
     }
 
+    // New Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'POST') {
+      
+    }
+
     // Messages Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'GET') {
 
     }
 
 
-    // New Message Endpoint
-    if (reqUrl.pathname == '/messages' && req.method === 'POST') {
-
-    }
 
 
     // Edit Message Endpoint
