@@ -12,7 +12,6 @@ module.exports = http.createServer((req, res) => {
         var body = ''
         req.on('data', function (data) {
             body += data
-            console.log(body);
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
@@ -31,9 +30,9 @@ module.exports = http.createServer((req, res) => {
                         return
                     }
                     const newUser = new User({
-                        name: body.name,
-                        email: body.email,
-                        password: body.password
+                        name: parsedBody.name,
+                        email: parsedBody.email,
+                        password: parsedBody.password
                     });
                     newUser.save();
                     res.statusCode = 201;
@@ -97,7 +96,7 @@ module.exports = http.createServer((req, res) => {
 
     // New Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'POST') {
-      
+
     }
 
     // Messages Endpoint
