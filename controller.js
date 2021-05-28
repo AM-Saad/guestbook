@@ -6,9 +6,9 @@ const Message = require("./models/Message").Message;
 
 module.exports = http.createServer((req, res) => {
     const reqUrl = url.parse(req.url, true);
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader('Content-Type', 'application/json');
-
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, application/json');
 
     // SignUp Endpoint
     if (reqUrl.pathname == '/signup' && req.method === 'POST') {
@@ -220,11 +220,14 @@ module.exports = http.createServer((req, res) => {
                                     res.end(JSON.stringify({ message: 'Message Deleted' }));
                                     return
                                 }).catch(error => {
+                                    console.log(error);
+
                                     res.statusCode = 500;
                                     res.setHeader('Content-Type', 'application/json');
                                     res.end(JSON.stringify({ message: '500 internal server error' }));
                                 })
                         }).catch(error => {
+                            console.log(error);
                             res.statusCode = 500;
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify({ message: '500 internal server error' }));
