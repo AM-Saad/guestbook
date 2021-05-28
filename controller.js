@@ -44,6 +44,7 @@ module.exports = http.createServer((req, res) => {
                             res.end(JSON.stringify({ message: 'Your account created successfully' }));
                             return
                         }).catch(error => {
+                            console.log(error);
                             res.statusCode = 500;
                             res.setHeader('Content-Type', 'application/json');
                             res.end(JSON.stringify({ message: '500 internal server error' }));

@@ -13,7 +13,7 @@ class Message {
         const db = getDb();
         return db.collection("messages")
             .insertOne({
-                messsage: this.message,
+                message: this.message,
                 user: this.user,
                 replies: this.replies,
             });
