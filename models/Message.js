@@ -24,6 +24,7 @@ class Message {
     }
 
     static findById(id) {
+        console.log(id);
         const db = getDb();
         return db.collection("messages").findOne({ _id: id });
     }
