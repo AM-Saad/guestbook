@@ -160,10 +160,7 @@ module.exports = http.createServer((req, res) => {
 
 
 
-    // Edit Message Endpoint
-    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
-
-    }
+    
 
     // Delete Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
@@ -191,7 +188,7 @@ module.exports = http.createServer((req, res) => {
             })
     }
 
-    // Reply To Message Endpoint
+    // Edit To Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
         let id = req.url.split('=').pop()
         var body = ''
@@ -235,6 +232,11 @@ module.exports = http.createServer((req, res) => {
                     res.end(JSON.stringify({ message: '500 internal server error' }));
                 })
         })
+
+    }
+
+    // Reply Message Endpoint
+    if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
 
     }
 
