@@ -35,6 +35,15 @@ class Message {
             .deleteOne({ _id: new mongodb.ObjectId(id) })
 
     }
+    static update(id, message) {
+        console.log(id);
+        console.log(message);
+        const db = getDb();
+        return db
+            .collection('messages')
+            .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: { message: message } });
+
+    }
 }
 
 
