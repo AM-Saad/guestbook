@@ -23,6 +23,13 @@ class Message {
         return db.collection('messages').find().toArray()
     }
 
+    static deleteById(id) {
+        const db = getDb();
+        return db
+            .collection('messages')
+            .deleteOne({ _id: new mongodb.ObjectId(id) })
+
+    }
 }
 
 
