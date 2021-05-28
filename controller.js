@@ -166,9 +166,28 @@ module.exports = http.createServer((req, res) => {
     }
 
     // Delete Message Endpoint
-    if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
-       
-
+    if (reqUrl.pathname == '/messages/:id' && req.method === 'DELETE') {
+        let id = reqUrl.params.id
+        Message.findById(id)
+            .then(message => {
+                if (!message) {
+                    res.statusCode = 404;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: 'Message not found!' }));
+                    return
+                }
+                Message.deleteById(id)
+                    .then(result => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify({message:'Message Deleted'}));
+                        return
+                    })
+            }).catch(error => {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ message: '500 internal server error' }));
+            })
     }
 
     // Reply To Message Endpoint
