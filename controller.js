@@ -34,11 +34,18 @@ module.exports = http.createServer((req, res) => {
                         email: parsedBody.email,
                         password: parsedBody.password
                     });
-                    newUser.save();
-                    res.statusCode = 201;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.end(JSON.stringify({ message: 'Your account created successfully' }));
-                    return
+                    newUser.save()
+                        .then(result => {
+                            res.statusCode = 201;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify({ message: 'Your account created successfully' }));
+                            return
+                        }).catch(error => {
+                            res.statusCode = 500;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify({ message: '500 internal server error' }));
+                        })
+
                 }).catch(error => {
                     res.statusCode = 500;
                     res.setHeader('Content-Type', 'application/json');
