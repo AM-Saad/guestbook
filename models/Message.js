@@ -23,6 +23,10 @@ class Message {
         return db.collection('messages').find().toArray()
     }
 
+    static findById(id) {
+        const db = getDb();
+        return db.collection("messages").findOne({ _id: id });
+    }
     static deleteById(id) {
         const db = getDb();
         return db
