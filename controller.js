@@ -144,7 +144,17 @@ module.exports = http.createServer((req, res) => {
 
     // Messages Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'GET') {
-  
+        Message.fetchAll()
+            .then(messages => {
+                res.statusCode = 201;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify(messages));
+                return
+            }).catch(error => {
+                res.statusCode = 500;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ message: '500 internal server error' }));
+            })
     }
 
 
