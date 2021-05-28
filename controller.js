@@ -166,8 +166,8 @@ module.exports = http.createServer((req, res) => {
     }
 
     // Delete Message Endpoint
-    if (reqUrl.pathname == '/messages/:id' && req.method === 'DELETE') {
-        let id = reqUrl.params.id
+    if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
+        let id = reqUrl.query.id
         Message.findById(id)
             .then(message => {
                 if (!message) {
