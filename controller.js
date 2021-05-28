@@ -167,9 +167,8 @@ module.exports = http.createServer((req, res) => {
 
     // Delete Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
-        let id = reqUrl.query
-        console.log(url);
-        Message.findById(id)
+        let id = url.parse(req.url, true).query
+        Message.findById(eq.url)
             .then(message => {
                 console.log(message);
                 if (!message) {
@@ -182,7 +181,7 @@ module.exports = http.createServer((req, res) => {
                     .then(result => {
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
-                        res.end(JSON.stringify({message:'Message Deleted'}));
+                        res.end(JSON.stringify({ message: 'Message Deleted' }));
                         return
                     })
             }).catch(error => {
