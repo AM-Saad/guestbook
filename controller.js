@@ -9,8 +9,8 @@ module.exports = http.createServer((req, res) => {
     var headers = {};
 
     // set header to handle the CORS
-    headers['Access-Control-Allow-Origin'] = '*';
-    headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With';
+    headers['Access-Control-Allow-Origin'] = 'http://localhost:8080';
+    headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With, cache-control';
     headers['Access-Contrl-Allow-Methods'] = 'PUT, POST, GET, DELETE, OPTIONS';
     headers["Access-Control-Max-Age"] = '86400';
     res.writeHead(200, headers);
@@ -18,7 +18,7 @@ module.exports = http.createServer((req, res) => {
     if (req.method === 'OPTIONS') {
         res.end();
     } else {
-
+        console.log('els');
         // SignUp Endpoint
         if (reqUrl.pathname == '/signup' && req.method === 'POST') {
             var body = ''
@@ -144,7 +144,6 @@ module.exports = http.createServer((req, res) => {
 
         // Messages Endpoint
         if (reqUrl.pathname == '/messages' && req.method === 'GET') {
-            console.log('here');
             Message.fetchAll()
                 .then(messages => {
                     res.statusCode = 201;
@@ -163,54 +162,48 @@ module.exports = http.createServer((req, res) => {
 
         // Delete Message Endpoint
         if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
-            let id = req.url.split('=').pop()
-            var body = ''
-            let parsedBody
-            req.on('data', function (data) {
-                body += data
-            })
-            req.on('end', function () {
-                parsedBody = JSON.parse(body)
-                if (!parsedBody.user) {
-                    res.statusCode = 401;
-                    res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
-                }
-                User.findById(user)
-                    .then(doc => {
-                        if (!doc || doc._id.toString() !== parsedBody.user.toString()) {
-                            res.statusCode = 401;
-                            res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
-                        }
-                        Message.findById(id)
-                            .then(message => {
-                                if (!message) {
-                                    res.statusCode = 404;
-                                    res.end(JSON.stringify({ message: 'Message not found!' }));
-                                }
-
-                                Message.deleteById(id)
-                                    .then(result => {
-                                        res.statusCode = 200;
-                                        res.end(JSON.stringify({ message: 'Message Deleted' }));
-                                    }).catch(error => {
-                                        console.log(error);
-
-                                        res.statusCode = 500;
-                                        res.end(JSON.stringify({ message: '500 internal server error' }));
-                                    })
-                            }).catch(error => {
-                                console.log(error);
-                                res.statusCode = 500;
-                                res.end(JSON.stringify({ message: '500 internal server error' }));
-                            })
-
-                    }).catch(error => {
+            let id = req.url.split('id=').pop()
+            let user = req.url.split('user=').pop()
+            console.log(user);
+            if (!user || !id) {
+                res.statusCode = 401;
+                res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
+            }
+            User.findById(user)
+                .then(doc => {
+                    if (!doc || doc._id.toString() !== parsedBody.user.toString()) {
                         res.statusCode = 401;
                         res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
-                        return
-                    })
+                    }
+                    Message.findById(id)
+                        .then(message => {
+                            if (!message) {
+                                res.statusCode = 404;
+                                res.end(JSON.stringify({ message: 'Message not found!' }));
+                            }
 
-            })
+                            Message.deleteById(id)
+                                .then(result => {
+                                    res.statusCode = 200;
+                                    res.end(JSON.stringify({ message: 'Message Deleted' }));
+                                }).catch(error => {
+                                    console.log(error);
+
+                                    res.statusCode = 500;
+                                    res.end(JSON.stringify({ message: '500 internal server error' }));
+                                })
+                        }).catch(error => {
+                            console.log(error);
+                            res.statusCode = 500;
+                            res.end(JSON.stringify({ message: '500 internal server error' }));
+                        })
+
+                }).catch(error => {
+                    res.statusCode = 401;
+                    res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
+                    return
+                })
+
 
         }
 
