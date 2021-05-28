@@ -144,7 +144,7 @@ module.exports = http.createServer((req, res) => {
 
     // Messages Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'GET') {
-
+  
     }
 
 

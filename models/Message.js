@@ -18,6 +18,10 @@ class Message {
                 replies: this.replies,
             });
     }
+    static fetchAll() {
+        const db = getDb();
+        return db.collection('messages').find().toArray()
+    }
 
 }
 
