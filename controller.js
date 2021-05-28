@@ -217,8 +217,7 @@ module.exports = http.createServer((req, res) => {
                         res.end(JSON.stringify({ message: 'Message not found!' }));
                         return
                     }
-                    message.message = parsedBody.message
-                    message.save()
+                    Message.update(id, parsedBody.message)
                         .then(result => {
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
