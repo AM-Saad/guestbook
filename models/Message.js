@@ -26,7 +26,7 @@ class Message {
     static findById(id) {
         console.log(id);
         const db = getDb();
-        return db.collection("messages").findOne({ _id: id });
+        return db.collection("messages").findOne({ _id: new mongodb.ObjectId(id) });
     }
     static deleteById(id) {
         const db = getDb();
