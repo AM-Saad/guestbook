@@ -5,8 +5,10 @@ const User = require("./models/User").User;
 const Message = require("./models/Message").Message;
 
 module.exports = http.createServer((req, res) => {
-
     const reqUrl = url.parse(req.url, true);
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Content-Type', 'application/json');
+
 
     // SignUp Endpoint
     if (reqUrl.pathname == '/signup' && req.method === 'POST') {
@@ -65,7 +67,6 @@ module.exports = http.createServer((req, res) => {
         var body = ''
         req.on('data', function (data) {
             body += data
-            console.log(body);
         })
         req.on('end', function () {
             const parsedBody = JSON.parse(body)
@@ -144,6 +145,7 @@ module.exports = http.createServer((req, res) => {
 
     // Messages Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'GET') {
+        console.log('here');
         Message.fetchAll()
             .then(messages => {
                 res.statusCode = 201;
@@ -151,6 +153,7 @@ module.exports = http.createServer((req, res) => {
                 res.end(JSON.stringify(messages));
                 return
             }).catch(error => {
+                console.log(error);
                 res.statusCode = 500;
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify({ message: '500 internal server error' }));
@@ -160,14 +163,13 @@ module.exports = http.createServer((req, res) => {
 
 
 
-    
+
 
     // Delete Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
         let id = req.url.split('=').pop()
         Message.findById(id)
             .then(message => {
-                console.log(message);
                 if (!message) {
                     res.statusCode = 404;
                     res.setHeader('Content-Type', 'application/json');
@@ -207,7 +209,6 @@ module.exports = http.createServer((req, res) => {
 
             Message.findById(id)
                 .then(message => {
-                    console.log(message);
                     if (!message) {
                         res.statusCode = 404;
                         res.setHeader('Content-Type', 'application/json');
