@@ -108,35 +108,37 @@ module.exports = http.createServer((req, res) => {
     // New Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'POST') {
         var body = ''
+        let parsedBody
         req.on('data', function (data) {
             body += data
         })
         req.on('end', function () {
-            const parsedBody = JSON.parse(body)
+            parsedBody = JSON.parse(body)
             if (!parsedBody.message || !parsedBody.user) {
                 res.statusCode = 401;
                 res.setHeader('Content-Type', 'application/json');
                 res.end(JSON.stringify({ message: 'Message and user id are required' }));
                 return
             }
+            const newMsg = new Message({
+                message: parsedBody.message,
+                user: parsedBody.user,
+                id: null,
+                replies: []
+            });
+            newMsg.save()
+                .then(result => {
+                    res.statusCode = 201;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: 'Message created successfully', newMsg: newMsg }));
+                    return
+                }).catch(error => {
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: '500 internal server error' }));
+                })
         })
-        const newMsg = new Message({
-            message: parsedBody.message,
-            user: parsedBody.user,
-            id: null,
-            replies: []
-        });
-        newMsg.save()
-            .then(result => {
-                res.statusCode = 201;
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ message: 'Message created successfully', newMsg: newMsg }));
-                return
-            }).catch(error => {
-                res.statusCode = 500;
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ message: '500 internal server error' }));
-            })
+
 
     }
 
