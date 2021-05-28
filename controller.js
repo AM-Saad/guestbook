@@ -193,6 +193,48 @@ module.exports = http.createServer((req, res) => {
 
     // Reply To Message Endpoint
     if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+        let id = req.url.split('=').pop()
+        var body = ''
+        let parsedBody
+        req.on('data', function (data) {
+            body += data
+        })
+        req.on('end', function () {
+            parsedBody = JSON.parse(body)
+            if (!parsedBody.message || !parsedBody.user) {
+                res.statusCode = 401;
+                res.setHeader('Content-Type', 'application/json');
+                res.end(JSON.stringify({ message: 'Message and user id are required' }));
+                return
+            }
+
+            Message.findById(id)
+                .then(message => {
+                    console.log(message);
+                    if (!message) {
+                        res.statusCode = 404;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.end(JSON.stringify({ message: 'Message not found!' }));
+                        return
+                    }
+                    message.message = parsedBody.message
+                    message.save()
+                        .then(result => {
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify({ message: 'Message Updated' }));
+                            return
+                        }).catch(error => {
+                            res.statusCode = 500;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify({ message: '500 internal server error' }));
+                        })
+                }).catch(error => {
+                    res.statusCode = 500;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: '500 internal server error' }));
+                })
+        })
 
     }
 
