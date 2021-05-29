@@ -163,7 +163,7 @@ module.exports = http.createServer((req, res) => {
 
             Message.findById(id)
                 .then(message => {
-                    if(!message){
+                    if (!message) {
                         res.writeHead(404, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: 'Message Not Found!!' }));
                     }
@@ -202,7 +202,6 @@ module.exports = http.createServer((req, res) => {
                     if (!doc || doc._id.toString() !== user.toString()) {
                         res.writeHead(401, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
-                        return
                     }
                     Message.findById(id)
                         .then(message => {
@@ -256,13 +255,15 @@ module.exports = http.createServer((req, res) => {
                         if (!message) {
                             res.writeHead(404, { 'Content-Type': 'application/json' });
                             res.end(JSON.stringify({ message: 'Message not found!' }));
-                            return
+                        }
+                        if (message.user.toString() != parsedBody.user.toString()) {
+                            res.writeHead(401, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
                         }
                         Message.update(id, parsedBody.message)
                             .then(result => {
                                 res.writeHead(200, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: 'Message Updated' }));
-                                return
                             }).catch(error => {
                                 res.writeHead(500, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: '500 internal server error' }));
