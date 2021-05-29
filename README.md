@@ -17,7 +17,7 @@ npm install
 
 ## Start
 
-Use the commands below to start the project after installing it.
+Use the command below to start the project after installing it.
 
 ```bash
 npm run start
