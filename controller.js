@@ -277,8 +277,52 @@ module.exports = http.createServer((req, res) => {
         }
 
         // Reply Message Endpoint
-        if (reqUrl.pathname == '/messages' && req.method === 'PUT') {
+        if (reqUrl.pathname == '/messages/replay' && req.method === 'PUT') {
+            let id = req.url.split('=').pop()
+            var body = ''
+            let parsedBody
+            req.on('data', function (data) {
+                body += data
+            })
+            req.on('end', function () {
+                parsedBody = JSON.parse(body)
+                if (!parsedBody.message || !parsedBody.user) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ message: 'Message and user id are required' }));
+                }
+                User.findById(user)
+                    .then(doc => {
+                        if (!doc) {
+                            res.writeHead(401, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ message: "User Not Found" }));
+                        }
+                        Message.findById(id)
+                            .then(message => {
+                                if (!message) {
+                                    res.writeHead(404, { 'Content-Type': 'application/json' });
+                                    res.end(JSON.stringify({ message: 'Message not found!' }));
+                                }
+                                let reply = {
+                                    message: message,
+                                    user: user.name
+                                }
+                                Message.reply(id, reply)
+                                    .then(result => {
+                                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                                        res.end(JSON.stringify({ message: 'Reply added' }));
+                                    }).catch(error => {
+                                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                                        res.end(JSON.stringify({ message: '500 internal server error' }));
+                                    })
+                            }).catch(error => {
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ message: '500 internal server error' }));
+                            })
+                    }).catch(error => {
 
+                    })
+
+            })
         }
     }
 

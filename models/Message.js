@@ -41,6 +41,13 @@ class Message {
             .updateOne({ _id: new mongodb.ObjectId(id) }, { $set: { message: message } });
 
     }
+    static reply(id, reply) {
+        const db = getDb();
+        return db
+            .collection('messages')
+            .updateOne({ _id: new mongodb.ObjectId(id) }, { $push: { message: message } });
+
+    }
 }
 
 
