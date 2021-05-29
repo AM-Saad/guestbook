@@ -143,7 +143,6 @@ module.exports = http.createServer((req, res) => {
                             .then(result => {
                                 res.writeHead(200, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: 'Message created successfully', newMsg: newMsg }));
-                                return
                             }).catch(error => {
                                 res.writeHead(500, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: '500 internal server error' }));
@@ -163,10 +162,13 @@ module.exports = http.createServer((req, res) => {
             let id = req.url.split('=').pop()
 
             Message.findById(id)
-                .then(messages => {
+                .then(message => {
+                    if(!message){
+                        res.writeHead(404, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ message: 'Message Not Found!!' }));
+                    }
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify(message));
-                    return
                 }).catch(error => {
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ message: '500 internal server error' }));
