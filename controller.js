@@ -57,7 +57,6 @@ module.exports = http.createServer((req, res) => {
                                 res.end(JSON.stringify({ message: 'Your account created successfully' }));
                                 return
                             }).catch(error => {
-                                console.log(error);
                                 res.writeHead(500, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: '500 internal server error' }));
                             })
@@ -167,7 +166,6 @@ module.exports = http.createServer((req, res) => {
                     res.end(JSON.stringify(messages));
                     return
                 }).catch(error => {
-                    console.log(error);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ message: '500 internal server error' }));
                 })
@@ -180,10 +178,11 @@ module.exports = http.createServer((req, res) => {
 
         // Delete Message Endpoint
         if (reqUrl.pathname == '/messages' && req.method === 'DELETE') {
-           
+            let id = req.url.split('id=').pop().split('&')[0];
+            let user = req.url.split('user=').pop()
             User.findById(user)
                 .then(doc => {
-                    if (!doc || doc._id.toString() !== parsedBody.user.toString()) {
+                    if (!doc || doc._id.toString() !== user.toString()) {
                         res.writeHead(401, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: "You're not allowed to preform this action" }));
                         return
@@ -200,15 +199,19 @@ module.exports = http.createServer((req, res) => {
                                     res.writeHead(200, { 'Content-Type': 'application/json' });
                                     res.end(JSON.stringify({ message: 'Message Deleted' }));
                                 }).catch(error => {
+                                    console.log(error);
                                     res.writeHead(500, { 'Content-Type': 'application/json' });
                                     res.end(JSON.stringify({ message: '500 internal server error' }));
                                 })
                         }).catch(error => {
+                            console.log(error);
+
                             res.writeHead(500, { 'Content-Type': 'application/json' });
                             res.end(JSON.stringify({ message: '500 internal server error' }));
                         })
 
                 }).catch(error => {
+                    console.log(error);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ message: '500 internal server error' }));
                 })
@@ -248,7 +251,6 @@ module.exports = http.createServer((req, res) => {
                                 res.end(JSON.stringify({ message: '500 internal server error' }));
                             })
                     }).catch(error => {
-                        console.log(error);
                         res.writeHead(500, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: '500 internal server error' }));
                     })

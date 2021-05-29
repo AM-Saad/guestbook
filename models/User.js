@@ -22,7 +22,6 @@ class User {
         return db.collection("users").findOne({ email: email });
     }
     static findById(id) {
-        console.log(id);
         const db = getDb();
         return db.collection("users").findOne({ _id: new mongodb.ObjectId(id) });
     }

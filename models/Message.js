@@ -35,8 +35,6 @@ class Message {
 
     }
     static update(id, message) {
-        console.log(id);
-        console.log(message);
         const db = getDb();
         return db
             .collection('messages')
