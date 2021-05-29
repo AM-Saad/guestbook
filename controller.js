@@ -291,7 +291,7 @@ module.exports = http.createServer((req, res) => {
                     res.writeHead(401, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ message: 'Message and user id are required' }));
                 }
-                User.findById(user)
+                User.findById(parsedBody.user)
                     .then(doc => {
                         if (!doc) {
                             res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -305,22 +305,25 @@ module.exports = http.createServer((req, res) => {
                                 }
                                 let reply = {
                                     message: message,
-                                    user: user.name
+                                    user: doc.name
                                 }
                                 Message.reply(id, reply)
                                     .then(result => {
                                         res.writeHead(200, { 'Content-Type': 'application/json' });
                                         res.end(JSON.stringify({ message: 'Reply added' }));
                                     }).catch(error => {
+                                        console.log(error);
                                         res.writeHead(500, { 'Content-Type': 'application/json' });
                                         res.end(JSON.stringify({ message: '500 internal server error' }));
                                     })
                             }).catch(error => {
+                                console.log(error);
                                 res.writeHead(500, { 'Content-Type': 'application/json' });
                                 res.end(JSON.stringify({ message: '500 internal server error' }));
                             })
                     }).catch(error => {
 
+                        console.log(error);
                     })
 
             })
