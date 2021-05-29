@@ -4,7 +4,7 @@ Guestbook is an API for guestbooks that let users create account to add/edit/del
 
 ## Installation
 
-Use the commands below to install the project after download it.
+Use the commands below to download and install the project
 
 ```bash
 $ git clone https://github.com/amsstudio/guestbook.git
