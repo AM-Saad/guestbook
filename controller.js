@@ -277,7 +277,8 @@ module.exports = http.createServer((req, res) => {
         }
 
         // Reply Message Endpoint
-        if (reqUrl.pathname == '/messages/replay' && req.method === 'PUT') {
+        if (reqUrl.pathname == '/messages/reply' && req.method === 'PUT') {
+            console.log('replyin');
             let id = req.url.split('=').pop()
             var body = ''
             let parsedBody

@@ -45,7 +45,7 @@ class Message {
         const db = getDb();
         return db
             .collection('messages')
-            .updateOne({ _id: new mongodb.ObjectId(id) }, { $push: { message: message } });
+            .updateOne({ _id: new mongodb.ObjectId(id) }, { "$push": { "replies": reply } });
 
     }
 }
